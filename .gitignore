@@ -1,0 +1,12 @@
+# Kotlin
+out/
+
+# JetBrains
+.idea
+
+# MacOS
+.DS_Store
+
+# Gradle
+.gradle
+build
