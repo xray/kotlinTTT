@@ -3,15 +3,15 @@ package tic_tac_toe.minimax
 import kotlin.test.Test
 
 class TreeNodeTest {
-    @Test fun testItCreatesANodeWithNoPoints() {
+    @Test fun testItCreatesANodeWithNoValue() {
         val node = TreeNode()
-        assert(!node.hasPoints)
+        assert(!node.hasValue)
     }
 
     @Test fun testItCreatesANodeWithPoints() {
         val node = TreeNode(5)
-        assert(node.hasPoints)
-        assert(node.points == 5)
+        assert(node.hasValue)
+        assert(node.value == 5)
     }
 
     @Test fun testItHasZeroChildrenByDefault() {
