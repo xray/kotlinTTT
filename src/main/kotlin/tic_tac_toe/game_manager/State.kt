@@ -7,4 +7,17 @@ class State (val board: Map<Int, Int>, val currentPlayer: Int, val gameComplete:
             false,
             newGameId
     )
+
+    override fun equals(other: Any?): Boolean {
+        return if (other !is State) false
+        else (hashCode() == other.hashCode())
+    }
+
+    override fun hashCode(): Int {
+        var result = board.hashCode()
+        result = 31 * result + currentPlayer
+        result = 31 * result + gameComplete.hashCode()
+        result = 31 * result + gameId
+        return result
+    }
 }

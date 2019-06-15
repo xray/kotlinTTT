@@ -9,7 +9,7 @@ class GameManager(private val repo: RepoIntermediary) {
     fun makeMove(gameId: Int, location: Int, player: Int) : Triple<Boolean, String, State> {
         val (_, _, readResultGame) = repo.readGame(gameId)
         val (_, _, writeResultGame) = repo.writeTurn(createTurn(readResultGame, location, player))
-        return Triple(true, "", createState(writeResultGame, player))
+        return Triple(true, "", createState(writeResultGame, getNextPlayer(player)))
     }
 
     private fun createTurn(game: Game, location: Int, player: Int) : Turn {
@@ -28,6 +28,12 @@ class GameManager(private val repo: RepoIntermediary) {
     }
 
     private fun createState(game: Game, player: Int) : State {
+
         return State(game.turns[0].board, player, game.complete, game.id)
+    }
+
+    private fun getNextPlayer(player: Int) : Int {
+        return if (player == 1) 2
+        else 1
     }
 }
