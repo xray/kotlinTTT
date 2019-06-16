@@ -97,4 +97,30 @@ class GameManagerTest {
         assert(state == expectedState)
     }
 
+    @Test fun testMakeMoveReturnsSameStateIfMoveIsInvalid() {
+        // Arrange
+        val board1 = mapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
+        val turn1 = Turn(board1, 3, 0, 0)
+        val board2 = mapOf(1 to 1, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
+        val turn2 = Turn(board2, 3, 1, 1)
+        val game = Game(false, 3, arrayOf(turn2, turn1))
+        val response = Triple(true, "", game)
+        every { mockRepo.readGame(3) } returns response
+
+        val board3 = mapOf(1 to 2, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
+        val turn3 = Turn(board3, 3, 1, 2)
+        val expectedResponse = Triple(false, "This position is already populated...", game)
+        every { mockRepo.writeTurn(turn3) } returns expectedResponse
+
+        val sm = GameManager(mockRepo)
+        val expectedState = State(board2, 2, false, 3)
+
+        // Act
+        val (success, message, state) = sm.makeMove(3, 1, 2)
+
+        // Assert
+        assert(!success)
+        assert(message == "This position is already populated...")
+        assert(state == expectedState)
+    }
 }
