@@ -22,6 +22,9 @@ dependencies {
     // Use the Kotlin JDK 8 standard library.
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+    // Use the Exposed ORM library.
+    implementation("org.jetbrains.exposed:exposed:0.14.4")
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
