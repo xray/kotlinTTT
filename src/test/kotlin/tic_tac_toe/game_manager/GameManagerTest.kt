@@ -20,8 +20,6 @@ class GameManagerTest {
     }
 
     @Test fun testNewGameReturnsANewState() {
-        val testGame = Game(false, 1, arrayOf())
-        every { mockRepo.createGame() } returns testGame
         val expectedBoard = mapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
 
         val sm = GameManager(mockRepo)
@@ -117,7 +115,7 @@ class GameManagerTest {
 
         // Assert
         assert(!success)
-        assert(message == "This position is already populated...")
+        assert(message == "This position is already populated.")
         assert(state == expectedState)
     }
 
@@ -130,6 +128,21 @@ class GameManagerTest {
 
         assert(!success)
         assert(message == "It is not Player 2's turn to play.")
+        assert(state == expectedState)
+    }
+
+    @Test fun testMakeMoveReturnsBlankStateWhenReadIdDoesNotExist() {
+        val board = mapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
+        val game = Game(true, 0, arrayOf())
+        val response = Triple(false, "Game ID does not exist.", game)
+        every { mockRepo.readGame(4) } returns response
+        val expectedState = State(board, 1, false, 1)
+        val sm = GameManager(mockRepo)
+
+        val (success, message, state) = sm.makeMove(4, 7, 1)
+
+        assert(!success)
+        assert(message == "Game ID does not exist.")
         assert(state == expectedState)
     }
 }
