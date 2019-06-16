@@ -7,21 +7,22 @@ class GameManager(private val repo: RepoIntermediary) {
     }
 
     fun makeMove(gameId: Int, position: Int, player: Int) : Triple<Boolean, String, State> {
-        val (readSuccess, readMessage, readResultGame) = repo.readGame(gameId)
+        val (readSuccess, readMessage, readGame) = repo.readGame(gameId)
         if (!readSuccess) return Triple(readSuccess, readMessage, newGame())
 
         val (valid, message) = isValidMove(
-                readResultGame.turns[0].board,
+                readGame.turns[0].board,
                 position,
                 player,
-                getNextPlayer(readResultGame)
+                getNextPlayer(readGame)
         )
 
-        if (!valid) return Triple(false, message, createState(readResultGame, getNextPlayer(readResultGame)))
+        if (!valid) return Triple(false, message, createState(readGame, getNextPlayer(readGame)))
 
-        val (_, _, writeResultGame) = repo.writeTurn(createTurn(readResultGame, position, player))
+        val (writeSuccess, writeMessage, writtenGame) = repo.writeTurn(createTurn(readGame, position, player))
+        if (!writeSuccess) return Triple(writeSuccess, writeMessage, createState(readGame, getNextPlayer(readGame)))
 
-        return Triple(true, "", createState(writeResultGame, switchPlayer(player)))
+        return Triple(true, "", createState(writtenGame, switchPlayer(player)))
     }
 
     fun isValidMove(board: Map<Int, Int>, position: Int, player: Int, turn: Int) : Pair<Boolean, String> {

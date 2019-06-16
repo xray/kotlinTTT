@@ -160,4 +160,29 @@ class GameManagerTest {
         assert(message == "Error making move, please try again later.")
         assert(state == expectedState)
     }
+
+    @Test fun testMakeMoveReturnsUnchangedStateWhenWriteFails() {
+        val board0 = mapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
+        val turn0 = Turn(board0, 6, 0, 0)
+        val board1 = mapOf(1 to 1, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
+        val turn1 = Turn(board1, 6, 1, 1)
+        val game = Game(false, 6, arrayOf(turn1, turn0))
+        val readResponse = Triple(true, "", game)
+        every { mockRepo.readGame(6) } returns readResponse
+
+        val board2 = mapOf(1 to 1, 2 to 0, 3 to 2, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
+        val turn2 = Turn(board2, 6, 3, 2)
+        val resGame = Game(true, 0, arrayOf())
+        val writeResponse = Triple(false, "Error making move, please try again later.", resGame)
+        every { mockRepo.writeTurn(turn2) } returns writeResponse
+
+        val expectedState = State(board1, 2, false, 6)
+        val sm = GameManager(mockRepo)
+
+        val (success, message, state) = sm.makeMove(6, 3, 2)
+
+        assert(!success)
+        assert(message == "Error making move, please try again later.")
+        assert(state == expectedState)
+    }
 }
