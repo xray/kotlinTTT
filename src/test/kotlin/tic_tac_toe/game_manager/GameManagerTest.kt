@@ -68,6 +68,7 @@ class GameManagerTest {
     }
 
     @Test fun testMakeMoveReturnsUpdatedStateWhenPlayerOneIsNext() {
+        // Arrange
         val boardR1 = mapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
         val turnR1 = Turn(boardR1, 2, 0, 0)
         val boardR2 = mapOf(1 to 1, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
@@ -89,9 +90,10 @@ class GameManagerTest {
         val sm = GameManager(mockRepo)
         val expectedState = State(boardW3, 1, false, 2)
 
-
+        // Act
         val (success, message, state) = sm.makeMove(2, 2, 2)
 
+        // Assert
         assert(success)
         assert(message == "")
         assert(state == expectedState)
@@ -107,11 +109,6 @@ class GameManagerTest {
         val response = Triple(true, "", game)
         every { mockRepo.readGame(3) } returns response
 
-        val board3 = mapOf(1 to 2, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
-        val turn3 = Turn(board3, 3, 1, 2)
-        val expectedResponse = Triple(false, "This position is already populated...", game)
-        every { mockRepo.writeTurn(turn3) } returns expectedResponse
-
         val sm = GameManager(mockRepo)
         val expectedState = State(board2, 2, false, 3)
 
@@ -121,6 +118,18 @@ class GameManagerTest {
         // Assert
         assert(!success)
         assert(message == "This position is already populated...")
+        assert(state == expectedState)
+    }
+
+    @Test fun testMakeMoveReturnsSameStateIfNotPlayersTurn() {
+        val board = mapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
+        val expectedState = State(board, 1, false, 1)
+        val sm = GameManager(mockRepo)
+
+        val (success, message, state) = sm.makeMove(1, 1, 2)
+
+        assert(!success)
+        assert(message == "It is not Player 2's turn to play.")
         assert(state == expectedState)
     }
 }

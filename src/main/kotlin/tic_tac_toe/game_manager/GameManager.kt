@@ -9,20 +9,24 @@ class GameManager(private val repo: RepoIntermediary) {
     fun makeMove(gameId: Int, position: Int, player: Int) : Triple<Boolean, String, State> {
         val (_, _, readResultGame) = repo.readGame(gameId)
 
-        val (valid, message) = isValidMove(readResultGame.turns[0].board, position)
-        if (!valid) return Triple(false, message, createState(readResultGame, player))
+        val (valid, message) = isValidMove(
+                readResultGame.turns[0].board,
+                position,
+                player,
+                getNextPlayer(readResultGame)
+        )
+
+        if (!valid) return Triple(false, message, createState(readResultGame, getNextPlayer(readResultGame)))
 
         val (_, _, writeResultGame) = repo.writeTurn(createTurn(readResultGame, position, player))
 
-        return Triple(true, "", createState(writeResultGame, getNextPlayer(player)))
+        return Triple(true, "", createState(writeResultGame, switchPlayer(player)))
     }
 
-    fun isValidMove(board: Map<Int, Int>, position: Int) : Pair<Boolean, String> {
-        return if (board[position] == 0) {
-            Pair(true, "")
-        } else {
-            Pair(false, "This position is already populated...")
-        }
+    fun isValidMove(board: Map<Int, Int>, position: Int, player: Int, turn: Int) : Pair<Boolean, String> {
+        if (player != turn) return Pair(false, "It is not Player $player's turn to play.")
+        if (board[position] != 0) return Pair(false, "This position is already populated...")
+        return Pair(true, "")
     }
 
     private fun createTurn(game: Game, playerPosition: Int, player: Int) : Turn {
@@ -45,8 +49,13 @@ class GameManager(private val repo: RepoIntermediary) {
         return State(game.turns[0].board, player, game.complete, game.id)
     }
 
-    private fun getNextPlayer(player: Int) : Int {
+    private fun switchPlayer(player: Int) : Int {
         return if (player == 1) 2
         else 1
+    }
+
+    private fun getNextPlayer(game: Game) : Int {
+        val lastPlayer = game.turns[0].player
+        return switchPlayer(lastPlayer)
     }
 }
