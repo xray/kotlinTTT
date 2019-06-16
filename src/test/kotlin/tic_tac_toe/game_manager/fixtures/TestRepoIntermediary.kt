@@ -26,4 +26,8 @@ class TestRepoIntermediary : RepoIntermediary {
         val writeGame = Game(false, 1, arrayOf(turn1, turn0))
         return Triple(true, "", writeGame)
     }
+
+    override fun checkCompleteBoard(board: Map<Int, Int>): Boolean {
+        return true
+    }
 }

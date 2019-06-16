@@ -31,6 +31,10 @@ class GameManager(private val repo: RepoIntermediary) {
         return Pair(true, "")
     }
 
+    fun isGameComplete(board: Map<Int, Int>) : Boolean{
+        return repo.checkCompleteBoard(board)
+    }
+
     private fun createTurn(game: Game, playerPosition: Int, player: Int) : Turn {
         val mostRecentBoard = game.turns[0].board
         val mutableBoard = mutableMapOf<Int, Int>()
