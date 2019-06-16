@@ -132,17 +132,32 @@ class GameManagerTest {
     }
 
     @Test fun testMakeMoveReturnsBlankStateWhenReadIdDoesNotExist() {
-        val board = mapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
         val game = Game(true, 0, arrayOf())
         val response = Triple(false, "Game ID does not exist.", game)
-        every { mockRepo.readGame(4) } returns response
+        every { mockRepo.readGame(0) } returns response
+        val board = mapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
         val expectedState = State(board, 1, false, 1)
         val sm = GameManager(mockRepo)
 
-        val (success, message, state) = sm.makeMove(4, 7, 1)
+        val (success, message, state) = sm.makeMove(0, 7, 1)
 
         assert(!success)
         assert(message == "Game ID does not exist.")
+        assert(state == expectedState)
+    }
+
+    @Test fun testMakeMoveReturnsBlankStateWhenReadFails() {
+        val board = mapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
+        val game = Game(true, 0, arrayOf())
+        val response = Triple(false, "Error making move, please try again later.", game)
+        every { mockRepo.readGame(5) } returns response
+        val expectedState = State(board, 1, false, 1)
+        val sm = GameManager(mockRepo)
+
+        val (success, message, state) = sm.makeMove(5, 3, 2)
+
+        assert(!success)
+        assert(message == "Error making move, please try again later.")
         assert(state == expectedState)
     }
 }
