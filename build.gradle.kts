@@ -25,6 +25,9 @@ dependencies {
     // Use the Exposed ORM library.
     implementation("org.jetbrains.exposed:exposed:0.14.4")
 
+    // Use the PostgreSQL driver library.
+    implementation("org.postgresql:postgresql:42.2.2")
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
