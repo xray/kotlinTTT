@@ -31,7 +31,7 @@ class GameManager(private val repo: RepoIntermediary) {
         return Pair(true, "")
     }
 
-    fun isGameComplete(board: Map<Int, Int>) : Boolean{
+    fun isGameComplete(board: Map<Int, Int>) : Pair<Boolean, Int>{
         return repo.checkCompleteBoard(board)
     }
 

@@ -27,7 +27,7 @@ class TestRepoIntermediary : RepoIntermediary {
         return Triple(true, "", writeGame)
     }
 
-    override fun checkCompleteBoard(board: Map<Int, Int>): Boolean {
-        return true
+    override fun checkCompleteBoard(board: Map<Int, Int>): Pair<Boolean, Int> {
+        return Pair(true, 0)
     }
 }

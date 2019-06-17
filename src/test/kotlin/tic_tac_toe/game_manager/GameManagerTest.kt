@@ -188,7 +188,7 @@ class GameManagerTest {
     
     @Test fun testIsGameCompleteCallsCheckGameComplete() {
         val completeBoard = mapOf(1 to 1, 2 to 2, 3 to 1, 4 to 0, 5 to 1, 6 to 0, 7 to 1, 8 to 2, 9 to 2)
-        every { mockRepo.checkCompleteBoard(completeBoard) } returns true
+        every { mockRepo.checkCompleteBoard(completeBoard) } returns Pair(true, 1)
         val gm = GameManager(mockRepo)
 
         gm.isGameComplete(completeBoard)
