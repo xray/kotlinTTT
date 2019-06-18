@@ -1,6 +1,9 @@
-package tic_tac_toe.game_client.user_interface
+package tic_tac_toe.game_client.user_interface.console
 
 import tic_tac_toe.game_client.GameMode
+import tic_tac_toe.game_client.user_interface.InputMethod
+import tic_tac_toe.game_client.user_interface.OutputMethod
+import tic_tac_toe.game_client.user_interface.UserInterface
 
 class ConsoleUI(private val input: InputMethod, private val output: OutputMethod) : UserInterface {
     override fun confirm(message: String): Boolean {
