@@ -99,7 +99,7 @@ class ProdGameManagerTest {
 
     @Test fun testMakeMoveReturnsACompletedGameWhenGameIsOver() {
         val board = mapOf(1 to 1, 2 to 2, 3 to 1, 4 to 0, 5 to 1, 6 to 0, 7 to 1, 8 to 2, 9 to 2)
-        val expectedState = State(board, 2, true, 1)
+        val expectedState = State(board, 1, true, 1)
         val gm = GameManager(pg)
 
         val game = gm.newGame()
