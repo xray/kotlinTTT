@@ -3,7 +3,7 @@ package tic_tac_toe.game_client
 import tic_tac_toe.game_client.user_interface.UserInterface
 
 class GameClient(private val io: UserInterface) {
-    fun start(gameModes: Array<GameMode>) {
+    fun start(gameModes: Map<String, GameMode>) {
         val selectedMode = io.getGameMode(gameModes)
         val endState = selectedMode.play()
         val winner = endState.currentPlayer

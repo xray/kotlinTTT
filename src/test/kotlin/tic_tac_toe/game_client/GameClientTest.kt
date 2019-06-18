@@ -9,10 +9,11 @@ import kotlin.test.Test
 class GameClientTest {
     private val mockIO = spyk<TestUserInterface>()
     private val mockGameMode = spyk<TestGameMode>()
+    private val gameModes = mapOf("Test" to mockGameMode)
 
     @Test fun testStartCallsGetGameMode(){
         val game = GameClient(mockIO)
-        val gameModes = arrayOf<GameMode>(TestGameMode())
+        val gameModes = mapOf("Test" to TestGameMode())
 
         game.start(gameModes)
 
@@ -21,7 +22,6 @@ class GameClientTest {
 
     @Test fun testStartCallsPlayOnSelectedGameMode() {
         val game = GameClient(mockIO)
-        val gameModes = arrayOf<GameMode>(mockGameMode)
 
         game.start(gameModes)
 
@@ -30,7 +30,6 @@ class GameClientTest {
 
     @Test fun testStartCallDisplayMessage() {
         val game = GameClient(mockIO)
-        val gameModes = arrayOf<GameMode>(mockGameMode)
 
         game.start(gameModes)
 
@@ -39,7 +38,6 @@ class GameClientTest {
 
     @Test fun testStartCallsConfirm() {
         val game = GameClient(mockIO)
-        val gameModes = arrayOf<GameMode>(mockGameMode)
 
         game.start(gameModes)
 
@@ -63,7 +61,7 @@ class GameClientTest {
                 1
         )
         every { mockGameMode.play() } returns state1 andThen state2
-        val gameModes = arrayOf<GameMode>(mockGameMode)
+        val gameModes = mapOf("Test" to mockGameMode)
 
         game.start(gameModes)
 
