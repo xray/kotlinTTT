@@ -3,11 +3,11 @@ package tic_tac_toe.game_client
 import io.mockk.*
 import tic_tac_toe.game_manager.State
 import tic_tac_toe.game_client.fixtures.TestGameMode
-import tic_tac_toe.game_client.fixtures.TestUserIntermediary
+import tic_tac_toe.game_client.user_interface.fixtures.TestUserInterface
 import kotlin.test.Test
 
 class GameClientTest {
-    private val mockIO = spyk<TestUserIntermediary>()
+    private val mockIO = spyk<TestUserInterface>()
     private val mockGameMode = spyk<TestGameMode>()
 
     @Test fun testStartCallsGetGameMode(){

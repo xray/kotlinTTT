@@ -1,9 +1,9 @@
-package tic_tac_toe.game_client.fixtures
+package tic_tac_toe.game_client.user_interface.fixtures
 
 import tic_tac_toe.game_client.GameMode
-import tic_tac_toe.game_client.UserIntermediary
+import tic_tac_toe.game_client.user_interface.UserInterface
 
-class TestUserIntermediary : UserIntermediary {
+class TestUserInterface : UserInterface {
     override fun confirm(message: String): Boolean {
         return false
     }
