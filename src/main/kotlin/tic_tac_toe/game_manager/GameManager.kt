@@ -1,6 +1,6 @@
 package tic_tac_toe.game_manager
 
-class GameManager(private val repo: RepoIntermediary) {
+class GameManager(private val repo: RepoInterface) {
     fun newGame() : State {
         val game = repo.createGame()
         return State(game.id)

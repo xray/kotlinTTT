@@ -1,6 +1,6 @@
 package tic_tac_toe.game_manager.repo
 
-import tic_tac_toe.game_manager.RepoIntermediary
+import tic_tac_toe.game_manager.RepoInterface
 import tic_tac_toe.game_manager.Game
 import tic_tac_toe.game_manager.Turn
 import tic_tac_toe.game_manager.repo.schema.games.Games
@@ -12,7 +12,7 @@ import tic_tac_toe.game_manager.repo.schema.boards.BoardEntry
 import tic_tac_toe.game_manager.repo.schema.games.GameEntry
 import tic_tac_toe.game_manager.repo.schema.turns.TurnEntry
 
-class PostgresRepo(env : String = "") : RepoIntermediary {
+class PostgresRepo(env : String = "") : RepoInterface {
     init {
         Database.connect("jdbc:postgresql://localhost:5432/tictactoe$env",
                 driver = "org.postgresql.Driver",

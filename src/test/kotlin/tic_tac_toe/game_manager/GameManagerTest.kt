@@ -3,11 +3,11 @@ package tic_tac_toe.game_manager
 import io.mockk.every
 import io.mockk.spyk
 import io.mockk.verify
-import tic_tac_toe.game_manager.fixtures.TestRepoIntermediary
+import tic_tac_toe.game_manager.fixtures.TestRepoInterface
 import kotlin.test.Test
 
 class GameManagerTest {
-    private val mockRepo = spyk<TestRepoIntermediary>()
+    private val mockRepo = spyk<TestRepoInterface>()
 
     @Test fun testNewGameCallsCreateGame() {
         val testGame = Game(false, 1, arrayOf())
