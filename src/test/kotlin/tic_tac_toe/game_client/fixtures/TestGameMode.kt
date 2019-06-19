@@ -1,6 +1,6 @@
 package tic_tac_toe.game_client.fixtures
 
-import tic_tac_toe.game_client.GameMode
+import tic_tac_toe.game_client.mode.GameMode
 import tic_tac_toe.game_manager.State
 
 class TestGameMode : GameMode {

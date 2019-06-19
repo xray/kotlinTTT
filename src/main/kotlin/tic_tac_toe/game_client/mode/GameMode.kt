@@ -1,4 +1,4 @@
-package tic_tac_toe.game_client
+package tic_tac_toe.game_client.mode
 
 import tic_tac_toe.game_manager.State
 

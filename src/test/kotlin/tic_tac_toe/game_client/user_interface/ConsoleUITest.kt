@@ -1,7 +1,7 @@
 package tic_tac_toe.game_client.user_interface
 
 import io.mockk.*
-import tic_tac_toe.game_client.GameMode
+import tic_tac_toe.game_client.mode.GameMode
 import tic_tac_toe.game_client.fixtures.TestGameMode
 import tic_tac_toe.game_client.user_interface.console.ConsoleUI
 import tic_tac_toe.game_client.user_interface.fixtures.TestInputMethod

@@ -1,9 +1,10 @@
 package tic_tac_toe.game_client.user_interface.console
 
-import tic_tac_toe.game_client.GameMode
+import tic_tac_toe.game_client.mode.GameMode
 import tic_tac_toe.game_client.user_interface.InputMethod
 import tic_tac_toe.game_client.user_interface.OutputMethod
 import tic_tac_toe.game_client.user_interface.UserInterface
+import tic_tac_toe.game_manager.State
 
 class ConsoleUI(private val input: InputMethod, private val output: OutputMethod) : UserInterface {
     override fun confirm(message: String): Boolean {
@@ -40,5 +41,13 @@ class ConsoleUI(private val input: InputMethod, private val output: OutputMethod
         output.send("\"${choice.toLowerCase()}\" is not a number between 1 and $numberOfModes...")
         output.send("Please try again!")
         return getGameMode(modes)
+    }
+
+    override fun getMove(state: State): Int {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showBoard(state: State): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
