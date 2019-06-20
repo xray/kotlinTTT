@@ -21,7 +21,10 @@ class GameManager(private val repo: RepoInterface) {
 
         val (writeSuccess, writeMessage, writtenGame) = repo.writeTurn(createTurn(readGame, position, player))
         if (!writeSuccess) return Triple(writeSuccess, writeMessage, createState(readGame, getNextPlayer(readGame)))
-        if (writtenGame.complete) return Triple(true, "", createState(writtenGame, player))
+        if (writtenGame.complete) {
+            val (_, winner) = isGameComplete(writtenGame.turns[0].board)
+            return Triple(true, "", createState(writtenGame, winner))
+        }
 
         return Triple(true, "", createState(writtenGame, switchPlayer(player)))
     }

@@ -44,6 +44,23 @@ class GameClientTest {
         verify { mockIO.confirm("Would you like to play again?") }
     }
 
+    @Test fun testStartWillDisplayDifferentMessageWhenGameEndsInTie() {
+        val mockGameMode = spyk<TestGameMode>()
+        val tieState = State(
+                mapOf(1 to 2, 2 to 1, 3 to 2, 4 to 1, 5 to 2, 6 to 1, 7 to 1, 8 to 2, 9 to 1),
+                0,
+                true,
+                1
+        )
+        every {mockGameMode.play()} returns tieState
+        val gameModes = mapOf("Test" to mockGameMode)
+        val game = GameClient(mockIO)
+
+        game.start(gameModes)
+
+        verify { mockIO.displayMessage("The game ended in a draw!") }
+    }
+
     @Test fun testStartWillRecurseIfUserChoosesToPlayAgain() {
         val confirmMessage = "Would you like to play again?"
         every { mockIO.confirm(confirmMessage) } returns true andThen false

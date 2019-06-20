@@ -11,7 +11,7 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 
 class ProdGameManagerTest {
-    val pg = PostgresRepo("_test")
+    private val pg = PostgresRepo("_test")
 
     @Test fun testNewGameReturnsANewState() {
         val expectedBoard = mapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
@@ -110,6 +110,27 @@ class ProdGameManagerTest {
         gm.makeMove(1, 5, 1)
         gm.makeMove(1, 9, 2)
         val (success, message, state) = gm.makeMove(1, 7, 1)
+
+        assert(success)
+        assert(message == "")
+        assert(state == expectedState)
+    }
+
+    @Test fun testMakeMoveReturnsStateWithCurrentPlayerAsZeroWhenGameEndsInTie() {
+        val board = mapOf(1 to 1, 2 to 1, 3 to 2, 4 to 2, 5 to 2, 6 to 1, 7 to 1, 8 to 2, 9 to 1)
+        val expectedState = State(board, 0, true, 1)
+        val gm = GameManager(pg)
+
+        val game = gm.newGame()
+        gm.makeMove(game.gameId, 1, 1)
+        gm.makeMove(1, 3, 2)
+        gm.makeMove(1, 7, 1)
+        gm.makeMove(1, 4, 2)
+        gm.makeMove(1, 9, 1)
+        gm.makeMove(1, 8, 2)
+        gm.makeMove(1, 6, 1)
+        gm.makeMove(1, 5, 2)
+        val (success, message, state) = gm.makeMove(1, 2, 1)
 
         assert(success)
         assert(message == "")

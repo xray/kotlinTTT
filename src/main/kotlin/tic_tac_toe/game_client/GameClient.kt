@@ -8,7 +8,8 @@ class GameClient(private val io: UserInterface) {
         val selectedMode = io.getGameMode(gameModes)
         val endState = selectedMode.play()
         val winner = endState.currentPlayer
-        io.displayMessage("Congrats Player $winner, you win!")
+        if (winner == 0) io.displayMessage("The game ended in a draw!")
+        else io.displayMessage("Congrats Player $winner, you win!")
         val playAgain = io.confirm("Would you like to play again?")
         if (playAgain) start(gameModes)
     }
