@@ -6,6 +6,7 @@ import tic_tac_toe.game_client.fixtures.TestGameMode
 import tic_tac_toe.game_client.user_interface.console.ConsoleUI
 import tic_tac_toe.game_client.user_interface.fixtures.TestInputMethod
 import tic_tac_toe.game_client.user_interface.fixtures.TestOutputMethod
+import tic_tac_toe.game_manager.State
 import kotlin.test.Test
 
 class ConsoleUITest {
@@ -195,5 +196,81 @@ class ConsoleUITest {
         verify { mockInput wasNot Called }
         verify { mockOutput wasNot Called }
         assert(result == mockGM)
+    }
+
+    @Test fun testGetMoveCallsSendOnOutputMethod() {
+        every { mockInput.receive() } returns "4"
+        val ui = ConsoleUI(mockInput, mockOutput)
+        val board = mapOf(1 to 1, 2 to 2, 3 to 1, 4 to 0, 5 to 1, 6 to 0, 7 to 0, 8 to 2, 9 to 0)
+        val state = State(board, 2, false, 1)
+
+        ui.getMove(state)
+
+        verify { mockOutput.send("Player 2, you're up!") }
+        verify { mockOutput.send("Please select a number between 1 and 9") }
+    }
+
+    @Test fun testGetMoveCallsReceiveOnInputMethod() {
+        every { mockInput.receive() } returns "4"
+        val ui = ConsoleUI(mockInput, mockOutput)
+        val board = mapOf(1 to 1, 2 to 2, 3 to 1, 4 to 0, 5 to 1, 6 to 0, 7 to 0, 8 to 2, 9 to 0)
+        val state = State(board, 2, false, 1)
+
+        ui.getMove(state)
+
+        verify { mockInput.receive() }
+    }
+
+    @Test fun testGetMoveReturnsAnInputtedSelection() {
+        every { mockInput.receive() } returns "4"
+        val ui = ConsoleUI(mockInput, mockOutput)
+        val board = mapOf(1 to 1, 2 to 2, 3 to 1, 4 to 0, 5 to 1, 6 to 0, 7 to 0, 8 to 2, 9 to 0)
+        val state = State(board, 2, false, 1)
+
+        val result = ui.getMove(state)
+
+        assert(result == 4)
+    }
+
+    @Test fun testGetMoveWillRecurseWhenInputIsInvalid() {
+        every { mockInput.receive() } returns "BAD INPUT" andThen "4"
+        val ui = ConsoleUI(mockInput, mockOutput)
+        val board = mapOf(1 to 1, 2 to 2, 3 to 1, 4 to 0, 5 to 1, 6 to 0, 7 to 0, 8 to 2, 9 to 0)
+        val state = State(board, 2, false, 1)
+
+        ui.getMove(state)
+
+        verifySequence {
+            mockOutput.send("Player 2, you're up!")
+            mockOutput.send("Please select a number between 1 and 9")
+            mockInput.receive()
+            mockOutput.send("\"bad input\" is not a number between 1 and 9...")
+            mockOutput.send("Please try again!")
+            mockOutput.send("Player 2, you're up!")
+            mockOutput.send("Please select a number between 1 and 9")
+            mockInput.receive()
+        }
+    }
+
+    @Test fun testShowBoardWillCallSendOnOutputMethod() {
+        val ui = ConsoleUI(mockInput, mockOutput)
+        val board = mapOf(1 to 1, 2 to 2, 3 to 1, 4 to 0, 5 to 1, 6 to 0, 7 to 0, 8 to 2, 9 to 0)
+        val state = State(board, 2, false, 1)
+
+        val x = "\u001b[36m✕\u001b[0m"
+        val o = "\u001b[35m◯\u001B[0m"
+        fun n(i: Int) : String {return "\u001B[30;1m$i\u001B[0m"}
+
+        ui.showBoard(state)
+
+        verifySequence {
+            mockOutput.send("╭───┰───┰───╮")
+            mockOutput.send("│ $x ┃ $o ┃ $x │")
+            mockOutput.send("┝━━━╋━━━╋━━━┥")
+            mockOutput.send("│ ${n(4)} ┃ $x ┃ ${n(6)} │")
+            mockOutput.send("┝━━━╋━━━╋━━━┥")
+            mockOutput.send("│ ${n(7)} ┃ $o ┃ ${n(9)} │")
+            mockOutput.send("╰───┸───┸───╯")
+        }
     }
 }

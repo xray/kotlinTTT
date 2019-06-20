@@ -44,10 +44,50 @@ class ConsoleUI(private val input: InputMethod, private val output: OutputMethod
     }
 
     override fun getMove(state: State): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val selections = mapOf("1" to 1, "2" to 2, "3" to 3, "4" to 4, "5" to 5,
+                "6" to 6, "7" to 7, "8" to 8, "9" to 9)
+        output.send("Player ${state.currentPlayer}, you're up!")
+        output.send("Please select a number between 1 and 9")
+        val choice = input.receive()
+        if (selections.containsKey(choice)) return selections.getValue(choice)
+        output.send("\"${choice.toLowerCase()}\" is not a number between 1 and 9...")
+        output.send("Please try again!")
+        return getMove(state)
     }
 
     override fun showBoard(state: State): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        fun colorNumber(i: Int) : String {return "\u001B[30;1m$i\u001B[0m"}
+        val x = "\u001b[36m✕\u001b[0m"
+        val o = "\u001b[35m◯\u001B[0m"
+
+        val convertedBoard = mutableMapOf<Int, String>()
+        for (spaces in state.board) {
+            when {
+                spaces.value == 1 -> convertedBoard[spaces.key] = x
+                spaces.value == 2 -> convertedBoard[spaces.key] = o
+                else -> {
+                    val num = colorNumber(spaces.key)
+                    convertedBoard[spaces.key] = num
+                }
+            }
+        }
+
+        val boardTop =     "╭───┰───┰───╮"
+        val boardDivider = "┝━━━╋━━━╋━━━┥"
+        val boardBottom =  "╰───┸───┸───╯"
+
+        val boardLine1 = "│ ${convertedBoard[1]} ┃ ${convertedBoard[2]} ┃ ${convertedBoard[3]} │"
+        val boardLine2 = "│ ${convertedBoard[4]} ┃ ${convertedBoard[5]} ┃ ${convertedBoard[6]} │"
+        val boardLine3 = "│ ${convertedBoard[7]} ┃ ${convertedBoard[8]} ┃ ${convertedBoard[9]} │"
+
+        output.send(boardTop)
+        output.send(boardLine1)
+        output.send(boardDivider)
+        output.send(boardLine2)
+        output.send(boardDivider)
+        output.send(boardLine3)
+        output.send(boardBottom)
+
+        return "$boardTop\n$boardLine1\n$boardDivider\n$boardLine2\n$boardDivider\n$boardLine3\n$boardBottom\n"
     }
 }

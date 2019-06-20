@@ -23,14 +23,16 @@ class TestUserInterface : UserInterface {
     }
 
     override fun showBoard(state: State): String {
-        return """
-            ╭───┰───┰───╮
-            │ 1 ┃ 2 ┃ 3 │
-            ┝━━━╋━━━╋━━━┥
-            │ 4 ┃ 5 ┃ 6 │
-            ┝━━━╋━━━╋━━━┥
-            │ 7 ┃ 8 ┃ 9 │
-            ╰───┸───┸───╯
-        """.trimIndent()
+        val x = "\u001b[36m✕\u001b[0m"
+        val o = "\u001b[35m◯\u001B[0m"
+        fun n(i: Int) : String {return "\u001B[30;1m$i\u001B[0m"}
+
+        return "╭───┰───┰───╮" +
+               "│ $x ┃ $o ┃ $x │" +
+               "┝━━━╋━━━╋━━━┥" +
+               "│ ${n(4)} ┃ $x ┃ ${n(6)} │" +
+               "┝━━━╋━━━╋━━━┥" +
+               "│ ${n(7)} ┃ $o ┃ ${n(9)} │" +
+               "╰───┸───┸───╯"
     }
 }
