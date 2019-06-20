@@ -3,13 +3,18 @@
  */
 package tic_tac_toe
 
-class App {
-    val greeting: String
-        get() {
-            return "Hello world."
-        }
-}
+import tic_tac_toe.game_client.GameClient
+import tic_tac_toe.game_client.mode.PvP
+import tic_tac_toe.game_client.mode.local.LocalMI
+import tic_tac_toe.game_client.user_interface.console.ConsoleInput
+import tic_tac_toe.game_client.user_interface.console.ConsoleOutput
+import tic_tac_toe.game_client.user_interface.console.ConsoleUI
+import tic_tac_toe.game_manager.GameManager
+import tic_tac_toe.game_manager.repo.PostgresRepo
 
-fun main(args: Array<String>) {
-    println(App().greeting)
+fun main() {
+    val ui = ConsoleUI(ConsoleInput(), ConsoleOutput())
+    val gm = GameManager(PostgresRepo())
+    val client = GameClient(ui)
+    client.start(mapOf("Player vs. Player" to PvP(ui, LocalMI(gm))))
 }
