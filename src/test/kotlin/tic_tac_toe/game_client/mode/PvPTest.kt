@@ -74,6 +74,7 @@ class PvPTest {
             mockIO.showBoard(state)
             mockIO.getMove(state)
             mockMI.makeMove(1, 7, 1)
+            mockIO.showBoard(updatedState)
         }
     }
 
@@ -103,6 +104,7 @@ class PvPTest {
             mockIO.showBoard(updatedState)
             mockIO.getMove(updatedState)
             mockMI.makeMove(1, 7, 1)
+            mockIO.showBoard(updatedStateTwo)
         }
     }
 }

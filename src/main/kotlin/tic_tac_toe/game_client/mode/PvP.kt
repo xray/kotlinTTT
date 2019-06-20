@@ -12,7 +12,7 @@ class PvP(private val io: UserInterface, private val gm: ManagerInterface) : Gam
         io.showBoard(state)
         val move = io.getMove(state)
         val (success, message, returnState) = gm.makeMove(state.gameId, move, state.currentPlayer)
-        if (success && returnState.gameComplete) return returnState
+        if (success && returnState.gameComplete) { io.showBoard(returnState); return returnState }
         if (success) return play(returnState)
         io.displayMessage(message)
         io.displayMessage("Please try again!")
