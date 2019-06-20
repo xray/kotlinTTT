@@ -4,8 +4,11 @@
 package tic_tac_toe
 
 import tic_tac_toe.game_client.GameClient
+import tic_tac_toe.game_client.mode.CvC
+import tic_tac_toe.game_client.mode.cpu.PvCPU
 import tic_tac_toe.game_client.mode.PvECPU
 import tic_tac_toe.game_client.mode.PvP
+import tic_tac_toe.game_client.mode.cpu.ai.UnbeatableAI
 import tic_tac_toe.game_client.mode.local.LocalMI
 import tic_tac_toe.game_client.user_interface.console.ConsoleInput
 import tic_tac_toe.game_client.user_interface.console.ConsoleOutput
@@ -16,9 +19,13 @@ import tic_tac_toe.game_manager.repo.PostgresRepo
 fun main() {
     val ui = ConsoleUI(ConsoleInput(), ConsoleOutput())
     val gm = GameManager(PostgresRepo())
+    val mi = LocalMI(gm)
+    val ai = UnbeatableAI(mi)
     val client = GameClient(ui)
     client.start(mapOf(
             "Player vs. Player" to PvP(ui, LocalMI(gm)),
-            "Player vs. Computer (Easy)" to PvECPU(ui, LocalMI(gm))
+            "Player vs. Computer (Easy)" to PvECPU(ui, mi),
+            "Player vs. Developer (Impossible)" to PvCPU(ui, mi, ai),
+            "Computer vs. Itself (Meta)" to CvC(ui, mi, ai)
     ))
 }

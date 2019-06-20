@@ -15,7 +15,7 @@ class TestManagerInterface : ManagerInterface {
         return Triple(true, "", state)
     }
 
-    override fun isValidMove(player: Int, location: Int, state: State): Pair<Boolean, String> {
+    override fun isBoardComplete(board: Map<Int, Int>): Pair<Boolean, Int> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -23,4 +23,7 @@ class TestManagerInterface : ManagerInterface {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun isValidMove(player: Int, location: Int, state: State): Pair<Boolean, String> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

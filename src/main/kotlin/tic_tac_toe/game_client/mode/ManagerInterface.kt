@@ -7,4 +7,5 @@ interface ManagerInterface {
     fun makeMove(gameId: Int, location: Int, player: Int) : Triple<Boolean, String, State>
     fun isValidMove(player: Int, location: Int, state: State) : Pair<Boolean, String>
     fun isGameComplete(state: State) : Pair<Boolean, Int>
+    fun isBoardComplete(board: Map<Int, Int>) : Pair<Boolean, Int>
 }
