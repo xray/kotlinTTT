@@ -28,6 +28,8 @@ dependencies {
     // Use the PostgreSQL driver library.
     implementation("org.postgresql:postgresql:42.2.2")
 
+    implementation("org.slf4j:slf4j-jdk14:1.7.9")
+    
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
