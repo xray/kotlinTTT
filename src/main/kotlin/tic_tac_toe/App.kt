@@ -4,6 +4,7 @@
 package tic_tac_toe
 
 import tic_tac_toe.game_client.GameClient
+import tic_tac_toe.game_client.mode.PvECPU
 import tic_tac_toe.game_client.mode.PvP
 import tic_tac_toe.game_client.mode.local.LocalMI
 import tic_tac_toe.game_client.user_interface.console.ConsoleInput
@@ -16,5 +17,8 @@ fun main() {
     val ui = ConsoleUI(ConsoleInput(), ConsoleOutput())
     val gm = GameManager(PostgresRepo())
     val client = GameClient(ui)
-    client.start(mapOf("Player vs. Player" to PvP(ui, LocalMI(gm))))
+    client.start(mapOf(
+            "Player vs. Player" to PvP(ui, LocalMI(gm)),
+            "Player vs. Computer (Easy)" to PvECPU(ui, LocalMI(gm))
+    ))
 }
